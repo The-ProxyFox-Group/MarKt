@@ -31,9 +31,9 @@ public class StringNode(private val value: String) : MarkdownNode {
 
 public class SymbolNode(public val left: String, public val right: String = left, public val nodes: MutableList<MarkdownNode> = arrayListOf()) : MarkdownNode {
     override val length: Int
-        get() = nodes.reduceBy(MarkdownNode::length)
+        get() = nodes.sumOf(MarkdownNode::length)
     override val trueLength: Int
-        get() = nodes.reduceBy(MarkdownNode::trueLength) + left.length + right.length
+        get() = nodes.sumOf(MarkdownNode::trueLength) + left.length + right.length
 
     public constructor(left: String, right: String, content: String) : this(left, right, MarkdownParser.parse(content).nodes)
 
@@ -85,9 +85,9 @@ public class SymbolNode(public val left: String, public val right: String = left
 
 public class HyperlinkNode(private val url: String, private val nodes: MutableList<MarkdownNode> = arrayListOf()) : MarkdownNode {
     override val length: Int
-        get() = nodes.reduceBy(MarkdownNode::length)
+        get() = nodes.sumOf(MarkdownNode::length)
     override val trueLength: Int
-        get() = nodes.reduceBy(MarkdownNode::trueLength) + 4 + url.length
+        get() = nodes.sumOf(MarkdownNode::trueLength) + 4 + url.length
 
     public constructor(url: String, content: String) : this(url, MarkdownParser.parse(content).nodes)
 
@@ -137,9 +137,9 @@ public class HyperlinkNode(private val url: String, private val nodes: MutableLi
 
 public class RootNode : MarkdownNode {
     override val length: Int
-        get() = nodes.reduceBy(MarkdownNode::length)
+        get() = nodes.sumOf(MarkdownNode::length)
     override val trueLength: Int
-        get() = nodes.reduceBy(MarkdownNode::trueLength)
+        get() = nodes.sumOf(MarkdownNode::trueLength)
 
 
     public val nodes: MutableList<MarkdownNode> = arrayListOf()
