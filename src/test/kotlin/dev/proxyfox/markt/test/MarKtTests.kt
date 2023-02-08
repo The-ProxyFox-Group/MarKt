@@ -15,6 +15,10 @@ val stringsToTest = arrayListOf(
         nodes.add(StringNode("\\*"))
         nodes.add(SymbolNode("*", "*", arrayListOf(StringNode("owo"))))
     },
+    "*owo* nya *" to RootNode().apply {
+        nodes.add(SymbolNode("*", "*", arrayListOf(StringNode("owo"))))
+        nodes.add(StringNode(" nya *"))
+    }
 )
 
 class MarKtTests {
