@@ -1,9 +1,6 @@
 package dev.proxyfox.markt.test
 
-import dev.proxyfox.markt.MarkdownParser
-import dev.proxyfox.markt.RootNode
-import dev.proxyfox.markt.StringNode
-import dev.proxyfox.markt.SymbolNode
+import dev.proxyfox.markt.*
 import org.junit.jupiter.api.Test
 
 // TODO: add more cases
@@ -18,6 +15,9 @@ val stringsToTest = arrayListOf(
     "*owo* nya *" to RootNode().apply {
         nodes.add(SymbolNode("*", "*", arrayListOf(StringNode("owo"))))
         nodes.add(StringNode(" nya *"))
+    },
+    "<a:owo_uwu:0123456789>" to RootNode().apply {
+        nodes.add(MentionNode("a:owo_uwu:", "0123456789"))
     }
 )
 
@@ -26,9 +26,10 @@ class MarKtTests {
     fun testMarkdown() {
         MarkdownParser.addDefaultRules()
         for (test in stringsToTest) {
-            println("Testing: ${test.first} == ${test.second}")
+            println("Input: ${test.first}\n")
+            println("Expected\n${test.second.toTreeString()}")
             val parsed = MarkdownParser.parse(test.first)
-            println("Parsed: $parsed")
+            println("Parsed:\n${parsed.toTreeString()}")
             assert(parsed == test.second)
         }
     }

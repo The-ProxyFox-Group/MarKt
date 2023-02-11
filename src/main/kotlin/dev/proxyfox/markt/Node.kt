@@ -1,11 +1,12 @@
 package dev.proxyfox.markt
 
-public sealed interface MarkdownNode {
+public interface MarkdownNode {
     public val length: Int
     public val trueLength: Int
     override fun toString(): String
     override fun equals(other: Any?): Boolean
     public fun truncate(length: Int): MarkdownNode
+    public fun toTreeString(indent: Int = 0): String
 }
 
 public class StringNode(private val value: String) : MarkdownNode {
@@ -20,6 +21,8 @@ public class StringNode(private val value: String) : MarkdownNode {
     }
 
     override fun truncate(length: Int): MarkdownNode = StringNode(value.substring(0, length))
+    override fun toTreeString(indent: Int): String = " ".repeat(indent) + value
+
     override fun hashCode(): Int {
         var result = value.hashCode()
         result = 31 * result + length
@@ -72,6 +75,15 @@ public class SymbolNode(public val left: String, public val right: String = left
         }
 
         return new
+    }
+
+    override fun toTreeString(indent: Int): String {
+        var out = "Symbol: " + " ".repeat(indent) + "$left\n"
+        for (node in nodes) {
+            out += node.toTreeString(indent+1)+"\n"
+        }
+        out += " ".repeat(indent) + right
+        return out
     }
 
     override fun hashCode(): Int {
@@ -127,6 +139,15 @@ public class HyperlinkNode(private val url: String, private val nodes: MutableLi
         return new
     }
 
+    override fun toTreeString(indent: Int): String {
+        var out = "Hyperlink: " + " ".repeat(indent) + "[\n"
+        for (node in nodes) {
+            out += node.toTreeString(indent+1)+"\n"
+        }
+        out += " ".repeat(indent) + "]($url)"
+        return out
+    }
+
     override fun hashCode(): Int {
         var result = url.hashCode()
         result = 31 * result + nodes.hashCode()
@@ -148,6 +169,7 @@ public class MentionNode(public val type: String, public val id: String) : Markd
     }
 
     override fun truncate(length: Int): MarkdownNode = this
+    override fun toTreeString(indent: Int): String = "Mention: $this"
 
     override fun hashCode(): Int {
         var result = type.hashCode()
@@ -199,6 +221,14 @@ public class RootNode : MarkdownNode {
         }
 
         return new
+    }
+
+    override fun toTreeString(indent: Int): String {
+        var out = ""
+        for (node in nodes) {
+            out += node.toTreeString(indent)+"\n"
+        }
+        return out
     }
 
     override fun hashCode(): Int {
