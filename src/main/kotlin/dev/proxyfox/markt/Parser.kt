@@ -64,8 +64,8 @@ public object MarkdownParser {
         +BracketRule("||")
         +BracketRule("_")
         +BracketRule("__")
-        +BracketRule("<",">")
         +HyperlinkRule
+        +MentionRule
     }
 
     public inline operator fun <reified T : MarkdownRule> T.unaryPlus() {

@@ -5,7 +5,6 @@ public sealed interface MarkdownNode {
     public val trueLength: Int
     override fun toString(): String
     override fun equals(other: Any?): Boolean
-    override fun hashCode(): Int
     public fun truncate(length: Int): MarkdownNode
 }
 
@@ -131,6 +130,28 @@ public class HyperlinkNode(private val url: String, private val nodes: MutableLi
     override fun hashCode(): Int {
         var result = url.hashCode()
         result = 31 * result + nodes.hashCode()
+        return result
+    }
+}
+
+public class MentionNode(public val type: String, public val id: String) : MarkdownNode {
+    override val length: Int = 0
+    override val trueLength: Int
+        get() = type.length+id.length+2
+
+    override fun toString(): String = "<$type$id>"
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is MentionNode) return false
+        return type == other.type && id == other.id
+    }
+
+    override fun truncate(length: Int): MarkdownNode = this
+
+    override fun hashCode(): Int {
+        var result = type.hashCode()
+        result = 31 * result + id.hashCode()
         return result
     }
 }

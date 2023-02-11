@@ -22,3 +22,9 @@ public object HyperlinkRule : MarkdownRule {
     override val triggerLength: Int = 1
     override fun parse(match: MatchResult): MarkdownNode = HyperlinkNode(match.groupValues[2], match.groupValues[1])
 }
+
+public object MentionRule : MarkdownRule {
+    override val regex: Regex = Regex("^<(@&?|#|a?:[0-9a-zA-Z_\\-]{2,}?:)([0-9]+?)>")
+    override val triggerLength: Int = 1
+    override fun parse(match: MatchResult): MarkdownNode = MentionNode(match.groupValues[1], match.groupValues[2])
+}
