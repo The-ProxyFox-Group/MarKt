@@ -37,7 +37,7 @@ public class SymbolNode(public val left: String, public val right: String = left
     override val trueLength: Int
         get() = nodes.sumOf(MarkdownNode::trueLength) + left.length + right.length
 
-    public constructor(left: String, right: String, content: String) : this(left, right, MarkdownParser.parse(content).nodes)
+    public constructor(left: String, right: String, content: String, parser: MarkdownParser) : this(left, right, parser.parse(content).nodes)
 
     override fun toString(): String {
         var out = ""
@@ -100,7 +100,7 @@ public class HyperlinkNode(public val url: String, public val nodes: MutableList
     override val trueLength: Int
         get() = nodes.sumOf(MarkdownNode::trueLength) + 4 + url.length
 
-    public constructor(url: String, content: String) : this(url, MarkdownParser.parse(content).nodes)
+    public constructor(url: String, content: String, parser: MarkdownParser) : this(url, parser.parse(content).nodes)
 
     override fun toString(): String {
         var out = ""
