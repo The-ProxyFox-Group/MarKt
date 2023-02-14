@@ -25,7 +25,7 @@ public object MarkdownParser {
             }
 
             val match = rules.firstNonNull {
-                regex.find(substr)
+                parse(substr)
             }
 
             if (match == null) {
@@ -43,9 +43,8 @@ public object MarkdownParser {
             if (current.isNotEmpty())
                 out.nodes.add(StringNode(current))
             current = ""
-            val node = match.first.parse(match.second)
-            out.nodes.add(node)
-            idx += node.trueLength
+            out.nodes.add(match.second)
+            idx += match.second.trueLength
         }
         if (current.isNotEmpty())
             out.nodes.add(StringNode(current))
