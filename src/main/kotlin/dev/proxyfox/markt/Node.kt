@@ -9,7 +9,7 @@ public interface MarkdownNode {
     public fun toTreeString(indent: Int = 0): String
 }
 
-public class StringNode(private val value: String) : MarkdownNode {
+public class StringNode(public val value: String) : MarkdownNode {
     override val length: Int = value.length
     override val trueLength: Int = value.length
 
@@ -94,7 +94,7 @@ public class SymbolNode(public val left: String, public val right: String = left
     }
 }
 
-public class HyperlinkNode(private val url: String, private val nodes: MutableList<MarkdownNode> = arrayListOf()) : MarkdownNode {
+public class HyperlinkNode(public val url: String, public val nodes: MutableList<MarkdownNode> = arrayListOf()) : MarkdownNode {
     override val length: Int
         get() = nodes.sumOf(MarkdownNode::length)
     override val trueLength: Int

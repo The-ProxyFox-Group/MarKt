@@ -64,6 +64,7 @@ public object MarkdownParser {
         +BracketRule("||")
         +BracketRule("_")
         +BracketRule("__")
+        +BracketRule("~~")
         +HyperlinkRule
         +MentionRule
     }
