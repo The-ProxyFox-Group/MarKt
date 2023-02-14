@@ -24,11 +24,10 @@ val stringsToTest = arrayListOf(
 class MarKtTests {
     @Test
     fun testMarkdown() {
-        MarkdownParser.addDefaultRules()
         for (test in stringsToTest) {
             println("Input: ${test.first}\n")
             println("Expected\n${test.second.toTreeString()}")
-            val parsed = MarkdownParser.parse(test.first)
+            val parsed = MarkdownParser.globalInstance.parse(test.first)
             println("Parsed:\n${parsed.toTreeString()}")
             assert(parsed == test.second)
         }

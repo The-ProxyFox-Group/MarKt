@@ -1,8 +1,6 @@
 package dev.proxyfox.markt
 
-public object MarkdownParser {
-    private const val ESCAPE = '\\'
-
+public class MarkdownParser {
     public val rules: ArrayList<MarkdownRule> = arrayListOf()
 
     public fun parse(content: String): RootNode {
@@ -75,4 +73,13 @@ public object MarkdownParser {
     public inline operator fun <reified T : MarkdownRule> plusAssign(rule: T): Unit = +rule
 
     public operator fun invoke(init: MarkdownParser.() -> Unit): Unit = init()
+
+    public companion object {
+        private const val ESCAPE = '\\'
+        public val globalInstance: MarkdownParser = MarkdownParser()
+
+        init {
+            globalInstance.addDefaultRules()
+        }
+    }
 }
