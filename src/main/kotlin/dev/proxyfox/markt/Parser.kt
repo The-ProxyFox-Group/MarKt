@@ -23,7 +23,7 @@ public class MarkdownParser {
             }
 
             val match = rules.firstNonNull {
-                parse(substr)
+                parse(substr, this@MarkdownParser)
             }
 
             if (match == null) {

@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "dev.proxyfox"
-version = "1.3"
+version = "1.4"
 
 repositories {
     mavenCentral()
