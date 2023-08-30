@@ -1,7 +1,8 @@
 package dev.proxyfox.markt.test
 
 import dev.proxyfox.markt.*
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.DynamicTest
+import org.junit.jupiter.api.TestFactory
 import kotlin.test.assertEquals
 
 // TODO: add more cases
@@ -47,14 +48,13 @@ val stringsToTest = arrayListOf(
 )
 
 class MarKtTests {
-    @Test
-    fun testMarkdown() {
-        for (test in stringsToTest) {
-            println("Input: ${test.first}\n")
-            println("Expected\n${test.second.toTreeString()}")
-            val parsed = MarkdownParser.globalInstance.parse(test.first)
-            println("Parsed:\n${parsed.toTreeString()}")
-            assertEquals(parsed, test.second)
+    @TestFactory
+    fun testMarkdown(): Iterable<DynamicTest> {
+        return stringsToTest.map {
+            DynamicTest.dynamicTest(it.first) {
+                val parsed = MarkdownParser.globalInstance.parse(it.first)
+                assertEquals(parsed, it.second, "\nExpected:\n${it.second.toTreeString().indent(2)}\nActual:\n${parsed.toTreeString().indent(2)}\n")
+            }
         }
     }
 }
