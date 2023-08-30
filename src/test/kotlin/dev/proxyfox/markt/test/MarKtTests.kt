@@ -2,6 +2,7 @@ package dev.proxyfox.markt.test
 
 import dev.proxyfox.markt.*
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
 // TODO: add more cases
 val stringsToTest = arrayListOf(
@@ -18,7 +19,31 @@ val stringsToTest = arrayListOf(
     },
     "<a:owo_uwu:0123456789>" to RootNode().apply {
         nodes.add(MentionNode("a:owo_uwu:", "0123456789"))
-    }
+    },
+    "*a*" to RootNode().apply {
+        nodes.add(SymbolNode("*", "*", arrayListOf(StringNode("a"))))
+    },
+    "**a**" to RootNode().apply {
+        nodes.add(SymbolNode("**", "**", arrayListOf(StringNode("a"))))
+    },
+    "_a_" to RootNode().apply {
+        nodes.add(SymbolNode("_", "_", arrayListOf(StringNode("a"))))
+    },
+    "__a__" to RootNode().apply {
+        nodes.add(SymbolNode("__", "__", arrayListOf(StringNode("a"))))
+    },
+    "`a`" to RootNode().apply {
+        nodes.add(SymbolNode("`", "`", arrayListOf(StringNode("a"))))
+    },
+    "``a``" to RootNode().apply {
+        nodes.add(SymbolNode("``", "``", arrayListOf(StringNode("a"))))
+    },
+    "```a```" to RootNode().apply {
+        nodes.add(SymbolNode("```", "```", arrayListOf(StringNode("a"))))
+    },
+    "||a||" to RootNode().apply {
+        nodes.add(SymbolNode("||", "||", arrayListOf(StringNode("a"))))
+    },
 )
 
 class MarKtTests {
@@ -29,7 +54,7 @@ class MarKtTests {
             println("Expected\n${test.second.toTreeString()}")
             val parsed = MarkdownParser.globalInstance.parse(test.first)
             println("Parsed:\n${parsed.toTreeString()}")
-            assert(parsed == test.second)
+            assertEquals(parsed, test.second)
         }
     }
 }
